@@ -33,7 +33,9 @@ android {
         }
         release {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            minifyEnabled true
+
+
+                minifyEnabled true
 
             ndk {
                 abiFilters 'armeabi-v7a'

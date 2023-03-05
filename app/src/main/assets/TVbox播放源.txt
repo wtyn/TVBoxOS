@@ -1,0 +1,19 @@
+TVbox 数据源地址：
+⚫ 复制地址并粘贴到配置地址框内即可，任选其一使用
+⚫ 不知道如何选择？可在浏览器中打开以下地址查看内含的数据接口
+
+https://dxawi.github.io/0/0.json
+https://agit.ai/hu/hcr/raw/branch/master/MMM.txt
+https://pastebin.com/raw/sbPpDm9G
+https://pastebin.com/raw/gtbKvnE1
+https://freed.yuanhsing.cf/TVBox/meowcf.json
+https://github.com/YuanHsing/freed/raw/master/TVBox/meow.json
+https://ghproxy.com/https://raw.githubusercontent.com/liu673cn/box/main/m.json
+https://raw.iqiq.io/liu673cn/box/main/m.json
+http://刚刚.live/gg.json
+http://js.134584.xyz/json/pp87.json
+https://freed.yuanhsing.cf/TVBox/meowcf.json
+https://raw.liucn.cc/box/m.json
+
+分享来自多啦资源网：www.duolasoft.com
+微信公众号：借根金箍棒，更多福利软件等你来~
