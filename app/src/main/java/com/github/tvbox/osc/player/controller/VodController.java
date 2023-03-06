@@ -50,6 +50,7 @@ import xyz.doikki.videoplayer.util.PlayerUtils;
 
 import static xyz.doikki.videoplayer.util.PlayerUtils.stringForTime;
 
+//TODO 内存泄漏。。。。
 public class VodController extends BaseController {
     public VodController(@NonNull @NotNull Context context) {
         super(context);
@@ -155,8 +156,11 @@ public class VodController extends BaseController {
     };
 
 
-
-
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mHandler.removeCallbacks(myRunnable2);
+    }
 
     @Override
     protected void initView() {
