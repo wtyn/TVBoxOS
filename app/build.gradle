@@ -5,8 +5,8 @@ android {
 
     defaultConfig {
         applicationId 'com.github.tvbox.osc'
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion 22
+        targetSdkVersion 30
         versionCode 1
         versionName '1.0.0'
         multiDexEnabled true
@@ -33,15 +33,30 @@ android {
         }
         release {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-
-                minifyEnabled true
+            minifyEnabled true
 
             ndk {
                 abiFilters 'armeabi-v7a'
             }
         }
     }
+
+
+    //打包后应用名称
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                if (variant.buildType.name == 'release') {//如果是release包
+                    outputFileName  = "tvbox_v${defaultConfig.versionName}_${releaseTime()}.apk"
+                } else if (variant.buildType.name == 'debug') {//如果是debug包
+
+                }
+            }
+        }
+    }
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -63,6 +78,8 @@ android {
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
+    // debugImplementation because LeakCanary should only run in debug builds.
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
     implementation 'com.google.zxing:core:3.4.1'
@@ -104,4 +121,9 @@ dependencies {
     implementation 'com.github.hedzr:android-file-chooser:v1.2.0-final'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
+}
+
+
+static def releaseTime() {
+    return new Date().format("yyyyMMdd_HHmm", TimeZone.default)
 }

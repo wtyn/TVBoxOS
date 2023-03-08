@@ -300,7 +300,6 @@ public class JSEngine {
                     try {
                         String parent = args[0].toString();
                         String child = args[1].toString();
-                    // TODO
                         if(parent.isEmpty()){
                             return child;
                         }

@@ -10,7 +10,6 @@ https://freed.yuanhsing.cf/TVBox/meowcf.json
 https://github.com/YuanHsing/freed/raw/master/TVBox/meow.json
 https://ghproxy.com/https://raw.githubusercontent.com/liu673cn/box/main/m.json
 https://raw.iqiq.io/liu673cn/box/main/m.json
-http://刚刚.live/gg.json
 http://js.134584.xyz/json/pp87.json
 https://freed.yuanhsing.cf/TVBox/meowcf.json
 https://raw.liucn.cc/box/m.json

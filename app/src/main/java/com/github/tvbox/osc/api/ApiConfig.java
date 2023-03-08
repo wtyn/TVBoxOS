@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
+
 import com.github.catvod.crawler.JarLoader;
 import com.github.catvod.crawler.JsLoader;
 import com.github.catvod.crawler.Spider;
@@ -37,6 +39,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -91,7 +94,9 @@ public class ApiConfig {
     public static String FindResult(String json, String configKey) {
         String content = json;
         try {
-            if (AES.isJson(content)) return content;
+            if (AES.isJson(content)) {
+                return content;
+            }
             Pattern pattern = Pattern.compile("[A-Za-z0]{8}\\*\\*");
             Matcher matcher = pattern.matcher(content);
             if(matcher.find()){
@@ -205,6 +210,7 @@ public class ApiConfig {
                         callback.error("拉取配置失败\n" + (response.getException() != null ? response.getException().getMessage() : ""));
                     }
 
+                    @Override
                     public String convertResponse(okhttp3.Response response) throws Throwable {
                         String result = "";
                         if (response.body() == null) {
@@ -224,7 +230,7 @@ public class ApiConfig {
     }
 
 
-    public void loadJar(boolean useCache, String spider, LoadConfigCallback callback) {
+    public void loadJar(boolean useCache, @NonNull String spider, LoadConfigCallback callback) {
         String[] urls = spider.split(";md5;");
         String jarUrl = urls[0];
         String md5 = urls.length > 1 ? urls[1].trim() : "";
@@ -330,8 +336,9 @@ public class ApiConfig {
             sb.setPlayerType(DefaultConfig.safeJsonInt(obj, "playerType", -1));
             sb.setCategories(DefaultConfig.safeJsonStringList(obj, "categories"));
             sb.setClickSelector(DefaultConfig.safeJsonString(obj, "click", ""));
-            if (firstSite == null)
+            if (firstSite == null) {
                 firstSite = sb;
+            }
             sourceBeanList.put(siteKey, sb);
         }
         if (sourceBeanList != null && sourceBeanList.size() > 0) {
@@ -362,13 +369,16 @@ public class ApiConfig {
         // 获取默认解析
         if (parseBeanList != null && parseBeanList.size() > 0) {
             String defaultParse = Hawk.get(HawkConfig.DEFAULT_PARSE, "");
-            if (!TextUtils.isEmpty(defaultParse))
+            if (!TextUtils.isEmpty(defaultParse)) {
                 for (ParseBean pb : parseBeanList) {
-                    if (pb.getName().equals(defaultParse))
+                    if (pb.getName().equals(defaultParse)) {
                         setDefaultParse(pb);
+                    }
                 }
-            if (mDefaultParse == null)
+            }
+            if (mDefaultParse == null) {
                 setDefaultParse(parseBeanList.get(0));
+            }
         }
         // 直播源
         liveChannelGroupList.clear();           //修复从后台切换重复加载频道列表
@@ -388,7 +398,7 @@ public class ApiConfig {
                     if(extUrl.startsWith("http") || extUrl.startsWith("clan://")){
                         extUrlFix = extUrl;
                     }else {
-                        extUrlFix = new String(Base64.decode(extUrl, Base64.DEFAULT | Base64.URL_SAFE | Base64.NO_WRAP), "UTF-8");
+                        extUrlFix = new String(Base64.decode(extUrl, Base64.DEFAULT | Base64.URL_SAFE | Base64.NO_WRAP), StandardCharsets.UTF_8);
                     }
 //                    System.out.println("extUrlFix :"+extUrlFix);
                     if (extUrlFix.startsWith("clan://")) {
@@ -529,10 +539,11 @@ public class ApiConfig {
             String groupName = ((JsonObject) groupElement).get("group").getAsString().trim();
             String[] splitGroupName = groupName.split("_", 2);
             liveChannelGroup.setGroupName(splitGroupName[0]);
-            if (splitGroupName.length > 1)
+            if (splitGroupName.length > 1) {
                 liveChannelGroup.setGroupPassword(splitGroupName[1]);
-            else
+            } else {
                 liveChannelGroup.setGroupPassword("");
+            }
             channelIndex = 0;
             for (JsonElement channelElement : ((JsonObject) groupElement).get("channels").getAsJsonArray()) {
                 JsonObject obj = (JsonObject) channelElement;
@@ -547,10 +558,11 @@ public class ApiConfig {
                 for (String url : urls) {
                     String[] splitText = url.split("\\$", 2);
                     sourceUrls.add(splitText[0]);
-                    if (splitText.length > 1)
+                    if (splitText.length > 1) {
                         sourceNames.add(splitText[1]);
-                    else
+                    } else {
                         sourceNames.add("源" + Integer.toString(sourceIndex));
+                    }
                     sourceIndex++;
                 }
                 liveChannelItem.setChannelSourceNames(sourceNames);
@@ -567,7 +579,9 @@ public class ApiConfig {
 
     public Spider getCSP(SourceBean sourceBean) {
         boolean js = sourceBean.getApi().endsWith(".js") || sourceBean.getApi().contains(".js?");
-        if (js) return jsLoader.getSpider(sourceBean.getKey(), sourceBean.getApi(), sourceBean.getExt(), sourceBean.getJar());
+        if (js) {
+            return jsLoader.getSpider(sourceBean.getKey(), sourceBean.getApi(), sourceBean.getExt(), sourceBean.getJar());
+        }
         return jarLoader.getSpider(sourceBean.getKey(), sourceBean.getApi(), sourceBean.getExt(), sourceBean.getJar());
     }
 
@@ -598,8 +612,9 @@ public class ApiConfig {
     }
 
     public SourceBean getSource(String key) {
-        if (!sourceBeanList.containsKey(key))
+        if (!sourceBeanList.containsKey(key)) {
             return null;
+        }
         return sourceBeanList.get(key);
     }
 
@@ -609,8 +624,9 @@ public class ApiConfig {
     }
 
     public void setDefaultParse(ParseBean parseBean) {
-        if (this.mDefaultParse != null)
+        if (this.mDefaultParse != null) {
             this.mDefaultParse.setDefault(false);
+        }
         this.mDefaultParse = parseBean;
         Hawk.put(HawkConfig.DEFAULT_PARSE, parseBean.getName());
         parseBean.setDefault(true);
@@ -651,8 +667,9 @@ public class ApiConfig {
 
     public IJKCode getIJKCodec(String name) {
         for (IJKCode code : ijkCodes) {
-            if (code.getName().equals(name))
+            if (code.getName().equals(name)) {
                 return code;
+            }
         }
         return ijkCodes.get(0);
     }
@@ -677,7 +694,9 @@ public class ApiConfig {
             if(!url.startsWith("http") && !url.startsWith("clan://")){
                 url = "http://" + url;
             }
-            if(url.startsWith("clan://"))url=clanToAddress(url);
+            if(url.startsWith("clan://")) {
+                url=clanToAddress(url);
+            }
             content = content.replace("./", url.substring(0,url.lastIndexOf("/") + 1));
         }
         return content;

@@ -42,7 +42,7 @@ public class ApiDialog extends BaseDialog {
     private EditText inputApi;
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refresh(RefreshEvent event) {
+    public void refresh(@NonNull RefreshEvent event) {
         if (event.type == RefreshEvent.TYPE_API_URL_CHANGE) {
             inputApi.setText((String) event.obj);
         }
@@ -56,17 +56,19 @@ public class ApiDialog extends BaseDialog {
         tvAddress = findViewById(R.id.tvAddress);
         inputApi = findViewById(R.id.input);
         //内置网络接口在此处添加
-        inputApi.setText(Hawk.get(HawkConfig.API_URL, ""));
+        inputApi.setText(Hawk.get(HawkConfig.API_URL, "https://dxawi.github.io/0/0.json"));
         findViewById(R.id.inputSubmit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String newApi = inputApi.getText().toString().trim();
                 if (!newApi.isEmpty()) {
                     ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
-                    if (!history.contains(newApi))
+                    if (!history.contains(newApi)) {
                         history.add(0, newApi);
-                    if (history.size() > 30)
+                    }
+                    if (history.size() > 30) {
                         history.remove(30);
+                    }
                     Hawk.put(HawkConfig.API_HISTORY, history);
                     listener.onchange(newApi);
                     dismiss();
@@ -77,12 +79,14 @@ public class ApiDialog extends BaseDialog {
             @Override
             public void onClick(View v) {
                 ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
-                if (history.isEmpty())
+                if (history.isEmpty()) {
                     return;
+                }
                 String current = Hawk.get(HawkConfig.API_URL, "");
                 int idx = 0;
-                if (history.contains(current))
+                if (history.contains(current)) {
                     idx = history.indexOf(current);
+                }
                 ApiHistoryDialog dialog = new ApiHistoryDialog(getContext());
                 dialog.setTip("历史配置列表");
                 dialog.setAdapter(new ApiHistoryDialogAdapter.SelectDialogInterface() {

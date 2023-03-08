@@ -96,6 +96,7 @@ public class SearchActivity extends BaseActivity {
 
     private static Boolean hasKeyBoard;
     private static Boolean isSearchBack;
+
     @Override
     protected void init() {
         initView();
@@ -145,8 +146,8 @@ public class SearchActivity extends BaseActivity {
         if (hasKeyBoard) {
             tvSearch.requestFocus();
             tvSearch.requestFocusFromTouch();
-        }else {
-            if(!isSearchBack){
+        } else {
+            if (!isSearchBack) {
                 etSearch.requestFocus();
                 etSearch.requestFocusFromTouch();
             }
@@ -270,7 +271,7 @@ public class SearchActivity extends BaseActivity {
                 if (mSearchCheckboxDialog == null) {
                     List<SourceBean> allSourceBean = ApiConfig.get().getSourceBeanList();
                     List<SourceBean> searchAbleSource = new ArrayList<>();
-                    for(SourceBean sourceBean : allSourceBean) {
+                    for (SourceBean sourceBean : allSourceBean) {
                         if (sourceBean.isSearchable()) {
                             searchAbleSource.add(sourceBean);
                         }
@@ -423,7 +424,7 @@ public class SearchActivity extends BaseActivity {
         mCheckSources = SearchHelper.getSourcesForSearch();
     }
 
-    public static void setCheckedSourcesForSearch(HashMap<String,String> checkedSources) {
+    public static void setCheckedSourcesForSearch(HashMap<String, String> checkedSources) {
         mCheckSources = checkedSources;
     }
 
@@ -490,7 +491,7 @@ public class SearchActivity extends BaseActivity {
         searchTitle = searchTitle.trim();
         String[] arr = searchTitle.split("\\s+");
         int matchNum = 0;
-        for(String one : arr) {
+        for (String one : arr) {
             if (name.contains(one)) matchNum++;
         }
         return matchNum == arr.length ? true : false;

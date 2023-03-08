@@ -15,11 +15,12 @@ import java.util.HashMap;
 public class EpgUtil {
 
     private static JsonObject epgDoc = null;
-    private static HashMap<String, JsonObject> epgHashMap = new HashMap<>();
+    private static final HashMap<String, JsonObject> epgHashMap = new HashMap<>();
 
     public static void init() {
-        if(epgDoc != null)
+        if(epgDoc != null) {
             return;
+        }
         try {
             AssetManager assetManager = App.getInstance().getAssets(); //获得assets资源管理器（assets中的文件无法直接访问，可以使用AssetManager访问）
             InputStreamReader inputStreamReader = new InputStreamReader(assetManager.open("epg_data.json"),"UTF-8"); //使用IO流读取json文件内容
@@ -41,7 +42,6 @@ public class EpgUtil {
                         epgHashMap.put(string,obj);
                     }
                 }
-                return;
             }
 
         } catch (IOException e) {
